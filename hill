@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบบันทึกยอดขาย รายรับ-รายจ่าย 3 สาขา และรายจ่ายบริษัท</title>
+  
+  <!-- Google Fonts: Prompt -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-wrapper">
+        <div class="brand-logo">
+          <!-- Store / Chart SVG Icon -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>ระบบบันทึกยอดขาย รายรับ-รายจ่าย 3 สาขา และรายจ่ายบริษัท</h1>
+          <p>หนองคาย • โคราช • ขอนแก่น • รายจ่ายบริษัท | บันทึกรายวัน สรุปยอดรายเดือน</p>
+        </div>
+      </div>
+
+      <div class="header-actions no-print">
+        <button class="btn btn-primary" id="btnQuickAddSales">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          บันทึกยอดขาย
+        </button>
+        <button class="btn btn-success" id="btnQuickAddRevenue">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          บันทึกรายรับ
+        </button>
+        <button class="btn btn-danger" id="btnQuickAddExpense">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          บันทึกรายจ่าย
+        </button>
+        <button class="btn btn-gmail" id="btnOpenGmailModal" title="ส่งสรุปรายการประจำวันหรือรายเดือนทาง Gmail">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          ส่งสรุปทาง Gmail
+        </button>
+        <button class="btn btn-outline" id="btnExportJPG" title="ส่งออกรายงานสรุปเป็นรูปภาพ JPG สำหรับแชร์ลง LINE หรือส่งต่อ">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          ส่งออกรูป JPG
+        </button>
+        <button class="btn btn-outline" id="btnPrintTopBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          พิมพ์รายงาน
+        </button>
+        <button class="btn btn-outline" id="btnExportTopBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          ส่งออก Excel
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Navigation Tabs -->
+  <nav class="main-nav-bar no-print">
+    <div class="nav-tabs-wrapper">
+      <button class="nav-tab-btn active" data-tab="tab-dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="9"></rect>
+          <rect x="14" y="3" width="7" height="5"></rect>
+          <rect x="14" y="12" width="7" height="9"></rect>
+          <rect x="3" y="16" width="7" height="5"></rect>
+        </svg>
+        ภาพรวม & สรุปรายเดือน
+      </button>
+
+      <button class="nav-tab-btn" data-tab="tab-sales">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="1" x2="12" y2="23"></line>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+        </svg>
+        บันทึกยอดขายรายวัน
+        <span class="tab-badge-pill" id="badgeSalesCount">0</span>
+      </button>
+
+      <button class="nav-tab-btn" data-tab="tab-revenue">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+          <path d="M4 6v12a2 2 0 0 0 2 2h14v-4"></path>
+          <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+        </svg>
+        บันทึกรายรับรายวัน
+        <span class="tab-badge-pill" id="badgeRevenueCount">0</span>
+      </button>
+
+      <button class="nav-tab-btn" data-tab="tab-expenses">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="23" y1="18" x2="13.5" y2="8.5"></line>
+          <polyline points="17 6 23 6 23 12"></polyline>
+          <path d="M1 18l6-6 4 4 8-8"></path>
+        </svg>
+        บันทึกรายจ่าย
+        <span class="tab-badge-pill" id="badgeExpenseCount">0</span>
+      </button>
+
+      <button class="nav-tab-btn" data-tab="tab-reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        รายงานงบรายเดือน
+      </button>
+
+      <button class="nav-tab-btn" data-tab="tab-settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+        สำรอง & จัดการข้อมูล
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+
+    <!-- Print Only Header -->
+    <div class="print-only">
+      <h2 style="font-size: 1.4rem; font-weight: bold; margin-bottom: 0.25rem;">รายงานสรุปยอดขาย รายรับ และรายจ่าย 3 สาขา และรายจ่ายบริษัท</h2>
+      <p style="color: #555; font-size: 0.85rem;" id="printMetaInfo">สาขา: หนองคาย • โคราช • ขอนแก่น • บริษัท | พิมพ์เมื่อ: -</p>
+    </div>
+
+    <!-- Period & Branch Filter Bar -->
+    <div class="period-bar no-print">
+      <div class="month-selector">
+        <button class="month-btn-arrow" id="btnPrevMonth" title="เดือนก่อนหน้า">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <input type="month" id="selectedMonthInput" class="month-picker-input">
+        <button class="month-btn-arrow" id="btnNextMonth" title="เดือนถัดไป">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="btn btn-outline btn-sm" id="btnCurrentMonth">เดือนปัจจุบัน</button>
+      </div>
+
+      <div class="branch-filter-pills">
+        <span style="font-size: 0.8rem; color: var(--gray-500); margin-right: 0.25rem;">กรองดูสาขา:</span>
+        <button class="branch-pill-btn active" data-branch="ALL">🏢 ทุกสาขา + บริษัท</button>
+        <button class="branch-pill-btn" data-branch="หนองคาย">📍 หนองคาย</button>
+        <button class="branch-pill-btn" data-branch="โคราช">📍 โคราช</button>
+        <button class="branch-pill-btn" data-branch="ขอนแก่น">📍 ขอนแก่น</button>
+        <button class="branch-pill-btn" data-branch="รายจ่ายบริษัท">🏢 รายจ่ายบริษัท</button>
+      </div>
+    </div>
+
+    <!-- ==============================================================
+         TAB 1: MONTHLY DASHBOARD (ภาพรวม & สรุปรายเดือน)
+         ============================================================== -->
+    <section id="tab-dashboard" class="tab-content active">
+      <!-- 4 Hero KPI Cards -->
+      <div class="kpi-grid">
+        <!-- Sales KPI -->
+        <div class="kpi-card sales">
+          <div class="kpi-header">
+            <span class="kpi-title">ยอดขายรวมเดือนนี้ (Total Sales)</span>
+            <div class="kpi-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiSalesTotal">฿0.00</div>
+          <div class="kpi-subtext" id="kpiSalesChannelsSummary">
+            <span>6 ช่องทาง (เงินสด, โอน, Grab, LINE MAN, Shopee, ไทยช่วยไทย)</span>
+          </div>
+        </div>
+
+        <!-- Revenue KPI -->
+        <div class="kpi-card revenue">
+          <div class="kpi-header">
+            <span class="kpi-title">รายรับรวมเดือนนี้ (Total Revenue)</span>
+            <div class="kpi-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiRevenueTotal" style="color: var(--revenue-color);">฿0.00</div>
+          <div class="kpi-subtext" id="kpiRevenueSub">
+            <span>ยอดเงินรับเข้าจริงในบัญชีและเงินสด</span>
+          </div>
+        </div>
+
+        <!-- Expense KPI -->
+        <div class="kpi-card expense">
+          <div class="kpi-header">
+            <span class="kpi-title">รายจ่ายรวมเดือนนี้ (Total Expenses)</span>
+            <div class="kpi-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiExpenseTotal" style="color: var(--expense-color);">฿0.00</div>
+          <div class="kpi-subtext" id="kpiExpenseSub">
+            <span>รวม 3 สาขา + รายจ่ายบริษัท</span>
+          </div>
+        </div>
+
+        <!-- Net Profit KPI -->
+        <div class="kpi-card profit">
+          <div class="kpi-header">
+            <span class="kpi-title">กำไรสุทธิเบื้องต้น (Net Profit)</span>
+            <div class="kpi-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiProfitTotal">฿0.00</div>
+          <div class="kpi-subtext" id="kpiProfitSub">
+            <span>คำนวณจาก: รายรับรวม - รายจ่ายรวม</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 Branch Summaries Grid -->
+      <div class="branch-grid" id="dashboardBranchCards">
+        <!-- Rendered dynamically by app.js: หนองคาย, โคราช, ขอนแก่น, รายจ่ายบริษัท -->
+      </div>
+
+      <!-- Charts & Breakdown 2 Columns -->
+      <div class="charts-grid-2col no-print">
+        <!-- Sales Channels Breakdown -->
+        <div class="chart-box">
+          <div class="chart-box-header">
+            <div class="chart-box-title">
+              <span style="color: var(--sales-color);">●</span> สัดส่วนยอดขาย 6 ช่องทาง
+            </div>
+            <span class="chart-box-subtitle" id="salesChannelTotalLabel">ยอดรวม ฿0.00</span>
+          </div>
+          <div class="breakdown-list" id="salesChannelsBreakdownList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Expense Categories Breakdown -->
+        <div class="chart-box">
+          <div class="chart-box-header">
+            <div class="chart-box-title">
+              <span style="color: var(--expense-color);">●</span> สัดส่วนรายจ่ายแบ่งตามหมวดหมู่
+            </div>
+            <span class="chart-box-subtitle" id="expenseCategoryTotalLabel">ยอดรวม ฿0.00</span>
+          </div>
+          <div class="breakdown-list" id="expenseCategoriesBreakdownList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison Chart Section -->
+      <div class="content-card no-print">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path></svg>
+              เปรียบเทียบยอดขาย • รายรับ • รายจ่าย แต่ละสาขา
+            </h3>
+            <p class="card-header-sub">หนองคาย vs โคราช vs ขอนแก่น vs รายจ่ายบริษัท ประจำเดือนนี้</p>
+          </div>
+        </div>
+        <div style="padding: 1.25rem;" id="branchComparisonChartWrap">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- Day by Day Monthly Table -->
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              ตารางสรุปรายวันประจำเดือน (Day-by-Day Breakdown)
+            </h3>
+            <p class="card-header-sub" id="dailyTableSub">แสดงสถิติรายวันของเดือนที่เลือก</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-outline btn-sm" id="btnExportDailyCSV">ส่งออกสรุปรายวัน (CSV)</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="tableDailySummary">
+            <thead>
+              <tr>
+                <th style="width: 120px;">วันที่</th>
+                <th>ยอดขายรวม (บาท)</th>
+                <th>รายรับรวม (บาท)</th>
+                <th>รายจ่ายรวม (บาท)</th>
+                <th>กำไรสุทธิประจำวัน (บาท)</th>
+                <th>สถานะกำไร</th>
+              </tr>
+            </thead>
+            <tbody id="tableDailySummaryBody">
+              <!-- Rendered by app.js -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>รวมทั้งเดือน:</td>
+                <td id="footDailySalesTotal">฿0.00</td>
+                <td id="footDailyRevenueTotal">฿0.00</td>
+                <td id="footDailyExpenseTotal">฿0.00</td>
+                <td id="footDailyProfitTotal">฿0.00</td>
+                <td id="footDailyProfitStatus">-</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         TAB 2: DAILY SALES (บันทึกยอดขายรายวัน 3 สาขา)
+         ============================================================== -->
+    <section id="tab-sales" class="tab-content" style="display: none;">
+      <!-- Daily Sales Entry Card -->
+      <div class="content-card no-print">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <span style="color: var(--sales-color);">💰</span> บันทึกยอดขายประจำวัน (3 สาขา)
+            </h3>
+            <p class="card-header-sub">ระบุยอดขายแยกตาม 6 ช่องทาง: เงินสด, เงินโอน, Grab, LINE MAN, ShopeeFood, ไทยช่วยไทย</p>
+          </div>
+        </div>
+        <div style="padding: 1.25rem;">
+          <form id="formDailySales">
+            <input type="hidden" id="salesEditId" value="">
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="salesInputDate">วันที่บันทึกยอดขาย <span style="color: var(--expense-color);">*</span></label>
+                <input type="date" id="salesInputDate" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>สาขา <span style="color: var(--expense-color);">*</span></label>
+                <div class="selector-cards">
+                  <label class="selector-card">
+                    <input type="radio" name="salesBranch" value="หนองคาย" checked>
+                    <div class="selector-card-box">
+                      <span>📍 หนองคาย</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="salesBranch" value="โคราช">
+                    <div class="selector-card-box">
+                      <span>📍 โคราช</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="salesBranch" value="ขอนแก่น">
+                    <div class="selector-card-box">
+                      <span>📍 ขอนแก่น</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="salesInputRecorder">ชื่อผู้บันทึกข้อมูล <span style="color: var(--expense-color);">*</span></label>
+                <input type="text" id="salesInputRecorder" class="form-control" placeholder="เช่น แคชเชียร์กะเช้า, สมศรี" required>
+              </div>
+            </div>
+
+            <div style="margin: 0.75rem 0 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--gray-800);">
+              กรอกยอดขาย 6 ช่องทาง (บาท):
+            </div>
+
+            <!-- 6 Sales Channels Inputs -->
+            <div class="form-grid-channels">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesCash">💵 ยอดขายเงินสด</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesCash" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesTransfer">📱 ยอดขายเงินโอน</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesTransfer" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesGrab">🛵 ยอดขายแกรป (Grab)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesGrab" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesLineman">🛵 ยอดขายไลน์แมน (LINE MAN)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesLineman" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesShopee">🛍️ ยอดขายช็อปปี้ฟู้ด (ShopeeFood)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesShopee" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="salesThai">🇹🇭 ยอดขายไทยช่วยไทย</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="salesThai" class="form-control sales-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+            </div>
+
+            <!-- Auto Total Banner -->
+            <div class="daily-total-banner">
+              <span style="font-weight: 600; color: var(--sales-color);">ยอดขายรวมของวันนี้:</span>
+              <span id="salesCalcTotalPreview" style="font-size: 1.35rem; font-weight: 700; color: var(--sales-color);">฿0.00</span>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.85rem;">
+              <label for="salesInputNote">หมายเหตุเพิ่มเติม (ถ้ามี)</label>
+              <input type="text" id="salesInputNote" class="form-control" placeholder="เช่น ฝนตกช่วงบ่าย, ยอดแกรปโปรโมชั่นวันศุกร์">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.65rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" id="btnResetSalesForm">ล้างฟอร์ม</button>
+              <button type="submit" class="btn btn-primary" id="btnSubmitSales">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                บันทึกยอดขาย
+              </button>
+              <button type="button" class="btn btn-success" id="btnSubmitSalesAndSyncRevenue" title="บันทึกยอดขายและสร้างข้อมูลรายรับให้อัตโนมัติในคลิกเดียว">
+                บันทึกยอดขายและสร้างรายรับด้วย ⚡
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Sales History Table -->
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">รายการบันทึกยอดขายประจำเดือน</h3>
+            <p class="card-header-sub" id="salesCountLabel">แสดง 0 รายการ</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="salesSearchInput" class="form-control" placeholder="ค้นหาตามวันที่, สาขา, ผู้บันทึก..." style="width: 240px; font-size: 0.825rem;">
+            <button class="btn btn-outline btn-sm" id="btnExportSalesCSV">ส่งออกยอดขาย (CSV)</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="tableSales">
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>สาขา</th>
+                <th style="text-align: right;">เงินสด</th>
+                <th style="text-align: right;">เงินโอน</th>
+                <th style="text-align: right;">แกรป</th>
+                <th style="text-align: right;">ไลน์แมน</th>
+                <th style="text-align: right;">ช็อปปี้ฟู้ด</th>
+                <th style="text-align: right;">ไทยช่วยไทย</th>
+                <th style="text-align: right;">ยอดขายรวม (บาท)</th>
+                <th>ผู้บันทึก</th>
+                <th class="no-print" style="text-align: center; width: 100px;">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableSalesBody">
+              <!-- Rendered by app.js -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align: right;">ยอดรวมตามรายการที่แสดง:</td>
+                <td id="salesSumCash" style="text-align: right;">0.00</td>
+                <td id="salesSumTransfer" style="text-align: right;">0.00</td>
+                <td id="salesSumGrab" style="text-align: right;">0.00</td>
+                <td id="salesSumLineman" style="text-align: right;">0.00</td>
+                <td id="salesSumShopee" style="text-align: right;">0.00</td>
+                <td id="salesSumThai" style="text-align: right;">0.00</td>
+                <td id="salesSumTotal" style="text-align: right; color: var(--sales-color);">฿0.00</td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         TAB 3: DAILY REVENUE (บันทึกรายรับรายวัน 3 สาขา)
+         ============================================================== -->
+    <section id="tab-revenue" class="tab-content" style="display: none;">
+      <!-- Daily Revenue Entry Card -->
+      <div class="content-card no-print">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <span style="color: var(--revenue-color);">💵</span> บันทึกรายรับประจำวัน (3 สาขา)
+            </h3>
+            <p class="card-header-sub">ระบุยอดเงินรับเข้าจริง 6 ช่องทาง: เงินสด, เงินโอน, Grab, LINE MAN, ShopeeFood, ไทยช่วยไทย</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-outline btn-sm" id="btnCopyFromSalesToRev">
+              📥 ดึงยอดจากบันทึกยอดขายของวันนี้
+            </button>
+          </div>
+        </div>
+        <div style="padding: 1.25rem;">
+          <form id="formDailyRevenue">
+            <input type="hidden" id="revEditId" value="">
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="revInputDate">วันที่บันทึกรายรับ <span style="color: var(--expense-color);">*</span></label>
+                <input type="date" id="revInputDate" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>สาขา <span style="color: var(--expense-color);">*</span></label>
+                <div class="selector-cards">
+                  <label class="selector-card">
+                    <input type="radio" name="revBranch" value="หนองคาย" checked>
+                    <div class="selector-card-box">
+                      <span>📍 หนองคาย</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="revBranch" value="โคราช">
+                    <div class="selector-card-box">
+                      <span>📍 โคราช</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="revBranch" value="ขอนแก่น">
+                    <div class="selector-card-box">
+                      <span>📍 ขอนแก่น</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="revInputRecorder">ชื่อผู้บันทึกข้อมูล <span style="color: var(--expense-color);">*</span></label>
+                <input type="text" id="revInputRecorder" class="form-control" placeholder="เช่น แคชเชียร์, บัญชีสาขา" required>
+              </div>
+            </div>
+
+            <div style="margin: 0.75rem 0 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--gray-800);">
+              กรอกรายรับเงินเข้าจริง 6 ช่องทาง (บาท):
+            </div>
+
+            <!-- 6 Revenue Channels Inputs -->
+            <div class="form-grid-channels">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revCash">💵 เงินสดรับจริง</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revCash" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revTransfer">📱 เงินโอนรับจริง</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revTransfer" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revGrab">🛵 แกรป (สุทธิรับเข้า)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revGrab" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revLineman">🛵 ไลน์แมน (สุทธิรับเข้า)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revLineman" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revShopee">🛍️ ช็อปปี้ฟู้ด (สุทธิรับเข้า)</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revShopee" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label for="revThai">🇹🇭 ไทยช่วยไทย</label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0" id="revThai" class="form-control rev-channel-input" placeholder="0.00" value="0">
+                </div>
+              </div>
+            </div>
+
+            <!-- Auto Total Banner -->
+            <div class="daily-total-banner revenue-banner">
+              <span style="font-weight: 600; color: var(--revenue-color);">รายรับรวมของวันนี้:</span>
+              <span id="revCalcTotalPreview" style="font-size: 1.35rem; font-weight: 700; color: var(--revenue-color);">฿0.00</span>
+            </div>
+
+            <div class="form-group" style="margin-top: 0.85rem;">
+              <label for="revInputNote">หมายเหตุเพิ่มเติม (ถ้ามี)</label>
+              <input type="text" id="revInputNote" class="form-control" placeholder="เช่น เงินเข้าบัญชีกสิกรสาขา, เคลียร์ยอดเงินสดเข้าตู้เซฟ">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.65rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" id="btnResetRevForm">ล้างฟอร์ม</button>
+              <button type="submit" class="btn btn-success" id="btnSubmitRevenue">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                บันทึกรายรับ
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Revenue History Table -->
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">รายการบันทึกรายรับประจำเดือน</h3>
+            <p class="card-header-sub" id="revCountLabel">แสดง 0 รายการ</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="revSearchInput" class="form-control" placeholder="ค้นหาตามวันที่, สาขา, ผู้บันทึก..." style="width: 240px; font-size: 0.825rem;">
+            <button class="btn btn-outline btn-sm" id="btnExportRevenueCSV">ส่งออกรายรับ (CSV)</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="tableRevenue">
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>สาขา</th>
+                <th style="text-align: right;">เงินสด</th>
+                <th style="text-align: right;">เงินโอน</th>
+                <th style="text-align: right;">แกรป</th>
+                <th style="text-align: right;">ไลน์แมน</th>
+                <th style="text-align: right;">ช็อปปี้ฟู้ด</th>
+                <th style="text-align: right;">ไทยช่วยไทย</th>
+                <th style="text-align: right;">รายรับรวม (บาท)</th>
+                <th>ผู้บันทึก</th>
+                <th class="no-print" style="text-align: center; width: 100px;">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableRevenueBody">
+              <!-- Rendered by app.js -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2" style="text-align: right;">ยอดรวมตามรายการที่แสดง:</td>
+                <td id="revSumCash" style="text-align: right;">0.00</td>
+                <td id="revSumTransfer" style="text-align: right;">0.00</td>
+                <td id="revSumGrab" style="text-align: right;">0.00</td>
+                <td id="revSumLineman" style="text-align: right;">0.00</td>
+                <td id="revSumShopee" style="text-align: right;">0.00</td>
+                <td id="revSumThai" style="text-align: right;">0.00</td>
+                <td id="revSumTotal" style="text-align: right; color: var(--revenue-color);">฿0.00</td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         TAB 4: EXPENSES (บันทึกรายจ่าย 3 สาขา + รายจ่ายบริษัท)
+         ============================================================== -->
+    <section id="tab-expenses" class="tab-content" style="display: none;">
+      <!-- Daily Expense Summary & Inspection Section -->
+      <div class="content-card">
+        <div class="card-header-bar" style="background: linear-gradient(135deg, #fff5f5, #ffffff); border-bottom: 1.5px solid #fecaca;">
+          <div>
+            <h3 class="card-header-title" style="color: #b91c1c;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              สรุปรายจ่ายประจำวัน (Daily Expense Summary)
+            </h3>
+            <p class="card-header-sub">เลือกดูสรุปรายจ่ายรวมประจำวัน หรือเลือกดูแยกเฉพาะแต่ละสาขา พร้อมส่งออกเป็นรูปภาพ JPG</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <label for="dailyExpFilterDate" style="font-size: 0.8rem; font-weight: 600; color: var(--gray-700);">เลือกวันที่:</label>
+              <input type="date" id="dailyExpFilterDate" class="form-control" style="width: auto; padding: 0.35rem 0.65rem; font-size: 0.85rem;">
+            </div>
+            <button class="btn btn-danger btn-sm" id="btnExportDailyExpenseJPG">
+              🖼️ ส่งออกรูปภาพ JPG สรุปรายจ่ายวันนี้
+            </button>
+            <button class="btn btn-gmail btn-sm" id="btnSendDailyExpenseGmail">
+              ✉️ ส่ง Gmail รายจ่ายวันนี้
+            </button>
+          </div>
+        </div>
+
+        <div style="padding: 1.25rem;">
+          <!-- Branch Selector Pills for Daily Expense Summary -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px dashed var(--gray-200);">
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;" id="dailyExpBranchPillsWrap">
+              <span style="font-size: 0.825rem; font-weight: 600; color: var(--gray-700);">ตัวเลือกการสรุป:</span>
+              <button type="button" class="branch-pill-btn active" data-daily-branch="ALL">🏢 สรุปรายจ่ายรวมประจำวัน (ทุกสาขา + บริษัท)</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="หนองคาย">📍 สาขาหนองคาย</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="โคราช">📍 สาขาโคราช</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="ขอนแก่น">📍 สาขาขอนแก่น</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="รายจ่ายบริษัท">🏢 รายจ่ายบริษัท</button>
+            </div>
+            <div style="font-size: 0.825rem; color: var(--gray-500);" id="dailyExpDateDisplay">
+              ข้อมูลประจำวันที่: -
+            </div>
+          </div>
+
+          <!-- Daily KPI Metric Cards (4 cards) -->
+          <div class="kpi-grid" style="margin-bottom: 1rem;" id="dailyExpKpiGrid">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- 4 Branch Breakdown Mini Cards (if ALL is selected) -->
+          <div id="dailyExpBranchBreakdownWrap" style="margin-bottom: 1rem;">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Categories Breakdown & Itemized Table for that Day -->
+          <div class="charts-grid-2col" style="margin-bottom: 0;">
+            <!-- Category breakdown list -->
+            <div class="chart-box" style="margin-bottom: 0;">
+              <div class="chart-box-header">
+                <div class="chart-box-title">
+                  <span style="color: var(--expense-color);">●</span> สัดส่วนรายจ่ายตามหมวดหมู่ของวันนี้
+                </div>
+                <span class="chart-box-subtitle" id="dailyExpCategoryTotalLabel">ยอดรวม ฿0.00</span>
+              </div>
+              <div class="breakdown-list" id="dailyExpCategoryList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Itemized list for that date -->
+            <div class="chart-box" style="margin-bottom: 0; display: flex; flex-direction: column;">
+              <div class="chart-box-header">
+                <div class="chart-box-title">
+                  <span style="color: #7c3aed;">📝</span> รายการจ่ายเงินของวันนี้
+                </div>
+                <span class="chart-box-subtitle" id="dailyExpItemCountLabel">0 รายการ</span>
+              </div>
+              <div style="flex: 1; overflow-y: auto; max-height: 280px;" id="dailyExpItemsList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Expense Entry Card -->
+      <div class="content-card no-print">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <span style="color: var(--expense-color);">📉</span> บันทึกรายการรายจ่าย (3 สาขา และรายจ่ายบริษัท)
+            </h3>
+            <p class="card-header-sub">หมวดหมู่: วัตถุดิบเครื่องดื่ม, อาหาร, เบเกอรี่, น้ำมันเชื้อเพลิงการเดินทาง, ค่าแรง, ค่าเช่าสาธารณูปโภค</p>
+          </div>
+        </div>
+        <div style="padding: 1.25rem;">
+          <form id="formExpense">
+            <input type="hidden" id="expEditId" value="">
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="expInputDate">วัน-เวลาที่จ่าย <span style="color: var(--expense-color);">*</span></label>
+                <input type="date" id="expInputDate" class="form-control" required>
+              </div>
+
+              <div class="form-group">
+                <label>สาขา / หน่วยงานที่บันทึกรายจ่าย <span style="color: var(--expense-color);">*</span></label>
+                <div class="selector-cards">
+                  <label class="selector-card">
+                    <input type="radio" name="expBranch" value="หนองคาย" checked>
+                    <div class="selector-card-box">
+                      <span>📍 หนองคาย</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="expBranch" value="โคราช">
+                    <div class="selector-card-box">
+                      <span>📍 โคราช</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="expBranch" value="ขอนแก่น">
+                    <div class="selector-card-box">
+                      <span>📍 ขอนแก่น</span>
+                    </div>
+                  </label>
+                  <label class="selector-card">
+                    <input type="radio" name="expBranch" value="รายจ่ายบริษัท">
+                    <div class="selector-card-box" style="border-color: #c4b5fd;">
+                      <span style="color: var(--company-color); font-weight: 600;">🏢 รายจ่ายบริษัท</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="expInputCategory">หมวดหมู่รายจ่าย <span style="color: var(--expense-color);">*</span></label>
+                <select id="expInputCategory" class="form-control" required>
+                  <option value="ต้นทุนวัตถุดิบเครื่องดื่ม">🥤 ต้นทุนวัตถุดิบเครื่องดื่ม</option>
+                  <option value="อาหาร">🍲 อาหาร</option>
+                  <option value="เบเกอรี่">🥐 เบเกอรี่</option>
+                  <option value="น้ำมันเชื้อเพลิงการเดินทาง">⛽ น้ำมันเชื้อเพลิงการเดินทาง</option>
+                  <option value="ค่าแรง">👥 ค่าแรง</option>
+                  <option value="ค่าเช่าสาธารณูปโภค">🏢 ค่าเช่าสาธารณูปโภค (ค่าเช่า/น้ำ/ไฟ/เน็ต)</option>
+                  <option value="ค่าใช้จ่ายอื่นๆ / เบ็ดเตล็ด">📦 ค่าใช้จ่ายอื่นๆ / เบ็ดเตล็ด</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="expInputAmount">จำนวนเงิน (บาท) <span style="color: var(--expense-color);">*</span></label>
+                <div class="input-money-wrap">
+                  <span class="currency-symbol">฿</span>
+                  <input type="number" step="0.01" min="0.01" id="expInputAmount" class="form-control" placeholder="0.00" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expInputDesc">รายละเอียดรายการรายจ่าย <span style="color: var(--expense-color);">*</span></label>
+              <input type="text" id="expInputDesc" class="form-control" placeholder="เช่น เมล็ดกาแฟอาราบิก้า 5 กก., นมสดพาสเจอร์ไรส์, จ่ายค่าไฟสาขา, เติมน้ำมันส่งของ" required>
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label for="expInputPaymentMethod">ประเภทเงิน / แหล่งที่จ่าย</label>
+                <select id="expInputPaymentMethod" class="form-control">
+                  <option value="เงินในลิ้นชักสาขา">💵 เงินในลิ้นชักสาขา</option>
+                  <option value="เงินโอนบัญชีสาขา">📱 เงินโอนบัญชีสาขา</option>
+                  <option value="โอนจากบัญชีบริษัทส่วนกลาง">🏢 โอนจากบัญชีบริษัทส่วนกลาง</option>
+                  <option value="ผู้จัดการ/เจ้าของสำรองจ่าย">👤 ผู้จัดการ/เจ้าของสำรองจ่าย</option>
+                  <option value="อื่นๆ">อื่นๆ</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="expInputPaidBy">ผู้ชำระ / ที่มาเงิน</label>
+                <input type="text" id="expInputPaidBy" class="form-control" placeholder="เช่น เจ้าของกิจการ, ผจก.สาขา, เงินสดหน้าร้าน">
+              </div>
+
+              <div class="form-group">
+                <label for="expInputRecorder">ชื่อผู้บันทึกข้อมูล <span style="color: var(--expense-color);">*</span></label>
+                <input type="text" id="expInputRecorder" class="form-control" placeholder="เช่น สมหมาย แคชเชียร์" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="expInputReceiptNo">เลขที่บิล / ใบเสร็จ / หมายเหตุ</label>
+              <input type="text" id="expInputReceiptNo" class="form-control" placeholder="เช่น บิลเงินสดเล่มที่ 03 เลขที่ 24, ใบเสร็จการไฟฟ้า">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.65rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" id="btnResetExpenseForm">ล้างฟอร์ม</button>
+              <button type="submit" class="btn btn-danger" id="btnSubmitExpense">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                บันทึกรายจ่าย
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Expense History Table -->
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">รายการบันทึกรายจ่ายประจำเดือน</h3>
+            <p class="card-header-sub" id="expCountLabel">แสดง 0 รายการ</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+            <select id="expCategoryFilter" class="form-control" style="width: auto; font-size: 0.825rem;">
+              <option value="ALL">ทุกหมวดหมู่รายจ่าย</option>
+              <option value="ต้นทุนวัตถุดิบเครื่องดื่ม">ต้นทุนวัตถุดิบเครื่องดื่ม</option>
+              <option value="อาหาร">อาหาร</option>
+              <option value="เบเกอรี่">เบเกอรี่</option>
+              <option value="น้ำมันเชื้อเพลิงการเดินทาง">น้ำมันเชื้อเพลิงการเดินทาง</option>
+              <option value="ค่าแรง">ค่าแรง</option>
+              <option value="ค่าเช่าสาธารณูปโภค">ค่าเช่าสาธารณูปโภค</option>
+              <option value="ค่าใช้จ่ายอื่นๆ / เบ็ดเตล็ด">ค่าใช้จ่ายอื่นๆ / เบ็ดเตล็ด</option>
+            </select>
+            <input type="text" id="expSearchInput" class="form-control" placeholder="ค้นหาตามรายการ, สาขา, ผู้บันทึก..." style="width: 220px; font-size: 0.825rem;">
+            <button class="btn btn-outline btn-sm" id="btnExportExpensesCSV">ส่งออกรายจ่าย (CSV)</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table" id="tableExpenses">
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>สาขา / หน่วยงาน</th>
+                <th>หมวดหมู่รายจ่าย</th>
+                <th>รายละเอียดรายการ</th>
+                <th style="text-align: right;">จำนวนเงิน (บาท)</th>
+                <th>ประเภทเงิน / ที่มา</th>
+                <th>ผู้บันทึก</th>
+                <th class="no-print" style="text-align: center; width: 100px;">จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="tableExpensesBody">
+              <!-- Rendered by app.js -->
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" style="text-align: right;">ยอดรวมรายจ่ายตามรายการที่แสดง:</td>
+                <td id="expSumTotal" style="text-align: right; color: var(--expense-color);">฿0.00</td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         TAB 5: MONTHLY REPORTS (รายงานงบรายเดือน & พิมพ์)
+         ============================================================== -->
+    <section id="tab-reports" class="tab-content" style="display: none;">
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+              รายงานสรุปงบการเงินรายเดือน (Monthly Financial Statement)
+            </h3>
+            <p class="card-header-sub" id="reportPeriodTitle">ประจำเดือน: -</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn btn-gmail btn-sm" id="btnReportSendGmail">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+              ส่งสรุปหน้านี้ทาง Gmail
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnReportExportJPG">
+              🖼️ ส่งออกรูปภาพ JPG
+            </button>
+            <button class="btn btn-primary btn-sm" id="btnPrintReportFull">
+              🖨️ สั่งพิมพ์รายงาน (A4 / PDF)
+            </button>
+            <button class="btn btn-outline btn-sm" id="btnExportFullMonthlyCSV">
+              📥 ส่งออกรายงานฉบับเต็ม (CSV)
+            </button>
+          </div>
+        </div>
+
+        <div style="padding: 1.5rem;" id="printableReportArea">
+          <!-- Summary Matrix Table: Branches x Financial Metrics -->
+          <h4 style="font-size: 1rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.75rem;">
+            1. สรุปผลประกอบการแยกตามสาขา (หนองคาย • โคราช • ขอนแก่น • รายจ่ายบริษัท)
+          </h4>
+          <div class="table-responsive" style="margin-bottom: 2rem;">
+            <table class="data-table" id="reportBranchPerformanceTable">
+              <thead>
+                <tr>
+                  <th>สาขา / หน่วยงาน</th>
+                  <th style="text-align: right;">ยอดขายรวม (บาท)</th>
+                  <th style="text-align: right;">รายรับรวม (บาท)</th>
+                  <th style="text-align: right;">รายจ่ายรวม (บาท)</th>
+                  <th style="text-align: right;">กำไรสุทธิ (บาท)</th>
+                  <th style="text-align: right;">อัตรากำไร (Margin)</th>
+                </tr>
+              </thead>
+              <tbody id="reportBodyBranchPerformance">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Sales Channels Breakdown Matrix -->
+          <h4 style="font-size: 1rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.75rem;">
+            2. รายละเอียดช่องทางยอดขาย 6 ช่องทางแยกตามสาขา
+          </h4>
+          <div class="table-responsive" style="margin-bottom: 2rem;">
+            <table class="data-table" id="reportSalesChannelsTable">
+              <thead>
+                <tr>
+                  <th>สาขา</th>
+                  <th style="text-align: right;">เงินสด</th>
+                  <th style="text-align: right;">เงินโอน</th>
+                  <th style="text-align: right;">แกรป (Grab)</th>
+                  <th style="text-align: right;">ไลน์แมน (LINE MAN)</th>
+                  <th style="text-align: right;">ช็อปปี้ฟู้ด (Shopee)</th>
+                  <th style="text-align: right;">ไทยช่วยไทย</th>
+                  <th style="text-align: right;">ยอดขายรวม</th>
+                </tr>
+              </thead>
+              <tbody id="reportBodySalesChannels">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Expense Categories Matrix -->
+          <h4 style="font-size: 1rem; font-weight: 600; color: var(--gray-800); margin-bottom: 0.75rem;">
+            3. รายละเอียดรายจ่ายแยกตามหมวดหมู่ (3 สาขา + รายจ่ายบริษัท)
+          </h4>
+          <div class="table-responsive" style="margin-bottom: 1.5rem;">
+            <table class="data-table" id="reportExpenseCategoriesTable">
+              <thead>
+                <tr>
+                  <th>สาขา / หน่วยงาน</th>
+                  <th style="text-align: right;">วัตถุดิบเครื่องดื่ม</th>
+                  <th style="text-align: right;">อาหาร</th>
+                  <th style="text-align: right;">เบเกอรี่</th>
+                  <th style="text-align: right;">น้ำมัน/เดินทาง</th>
+                  <th style="text-align: right;">ค่าแรง</th>
+                  <th style="text-align: right;">ค่าเช่าสาธารณูปโภค</th>
+                  <th style="text-align: right;">อื่นๆ/เบ็ดเตล็ด</th>
+                  <th style="text-align: right;">รายจ่ายรวม</th>
+                </tr>
+              </thead>
+              <tbody id="reportBodyExpenseCategories">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================================
+         TAB 6: SETTINGS & BACKUP (จัดการและสำรองข้อมูล)
+         ============================================================== -->
+    <section id="tab-settings" class="tab-content" style="display: none;">
+      <div class="content-card">
+        <div class="card-header-bar">
+          <div>
+            <h3 class="card-header-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              สำรอง กู้คืน และจัดการฐานข้อมูลในเครื่อง
+            </h3>
+            <p class="card-header-sub">ข้อมูลทั้งหมดจะถูกบันทึกในคอมพิวเตอร์ของคุณอัตโนมัติ (LocalStorage) ปลอดภัยและใช้งานแบบออฟไลน์ได้</p>
+          </div>
+        </div>
+        <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.5rem;">
+          <!-- Demo Data Action -->
+          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--gray-900);">✨ โหลดข้อมูลตัวอย่างจำลอง (Demo Data)</h4>
+              <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 2px;">
+                ใส่ข้อมูลยอดขาย 6 ช่องทาง, รายรับ 6 ช่องทาง และรายจ่าย 3 สาขา + บริษัท จำลองตลอดเดือนนี้ เพื่อให้เห็นกราฟและรายงานทันที
+              </p>
+            </div>
+            <button class="btn btn-outline" id="btnLoadDemoData">
+              โหลดข้อมูลตัวอย่าง
+            </button>
+          </div>
+
+          <!-- Backup & Restore Actions -->
+          <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 600; color: var(--gray-900);">💾 สำรองข้อมูลเป็นไฟล์ (Backup JSON)</h4>
+              <p style="font-size: 0.8rem; color: var(--gray-500); margin-top: 2px;">
+                ดาวน์โหลดไฟล์ข้อมูลทั้งหมดเก็บไว้ในคอมพิวเตอร์ หรือนำไปเปิดบนเครื่องคอมพิวเตอร์เครื่องอื่น
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-primary" id="btnExportJSON">
+                ดาวน์โหลดไฟล์สำรอง (.json)
+              </button>
+              <label class="btn btn-outline" style="cursor: pointer;">
+                นำเข้าข้อมูล (.json)
+                <input type="file" id="inputImportJSON" accept=".json" style="display: none;">
+              </label>
+            </div>
+          </div>
+
+          <!-- Clear All Data Action -->
+          <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: var(--radius-md); padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 600; color: #b91c1c;">⚠️ ล้างข้อมูลทั้งหมดในระบบ (Clear All Data)</h4>
+              <p style="font-size: 0.8rem; color: #dc2626; margin-top: 2px;">
+                ลบข้อมูลยอดขาย รายรับ และรายจ่ายทั้งหมดออกจากเครื่อง เพื่อเริ่มต้นบันทึกข้อมูลจริงจากศูนย์
+              </p>
+            </div>
+            <button class="btn btn-danger" id="btnClearAllDatabase">
+              ล้างข้อมูลทั้งหมดเพื่อเริ่มบันทึกใหม่
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal: Send Gmail Summary -->
+  <div class="modal-overlay" id="gmailModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #ea4335;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
+          ส่งสรุปรายการทาง Gmail
+        </h3>
+        <button type="button" class="modal-close-btn" id="btnCloseGmailModal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <!-- Report Type -->
+          <div class="form-group">
+            <label for="gmailReportType">1. รูปแบบสรุปรายการ <span style="color: var(--expense-color);">*</span></label>
+            <select id="gmailReportType" class="form-control">
+              <option value="DAILY_EXPENSE">🧾 สรุปรายจ่ายประจำวัน (Daily Expense Summary)</option>
+              <option value="MONTHLY_EXPENSE">📉 สรุปรายจ่ายประจำเดือน (Monthly Expense Summary)</option>
+              <option value="MONTHLY">📊 สรุปภาพรวมยอดขาย-รายรับ-รายจ่าย รายเดือน (Full Monthly)</option>
+              <option value="DAILY">📅 สรุปยอดขาย-รายรับ-รายจ่าย ประจำวัน (Full Daily)</option>
+            </select>
+          </div>
+
+          <!-- Specific Day (shown if DAILY) -->
+          <div class="form-group" id="gmailDateWrap" style="display: none;">
+            <label for="gmailSelectedDate">ระบุวันที่ต้องการส่งสรุป <span style="color: var(--expense-color);">*</span></label>
+            <input type="date" id="gmailSelectedDate" class="form-control">
+          </div>
+
+          <!-- Branch Scope -->
+          <div class="form-group" id="gmailBranchWrap">
+            <label for="gmailBranchFilter">2. สาขาที่ต้องการสรุป</label>
+            <select id="gmailBranchFilter" class="form-control">
+              <option value="ALL">🏢 รวมทุกสาขา + บริษัท</option>
+              <option value="หนองคาย">📍 สาขาหนองคาย</option>
+              <option value="โคราช">📍 สาขาโคราช</option>
+              <option value="ขอนแก่น">📍 สาขาขอนแก่น</option>
+              <option value="รายจ่ายบริษัท">🏢 รายจ่ายบริษัท</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gmailRecipientInput">
+            3. ส่งถึงอีเมลผู้รับ (To) <span style="font-size: 0.75rem; color: var(--gray-500);">(ระบุได้หลายอีเมล คั่นด้วยเครื่องหมายจุลภาค , )</span>
+          </label>
+          <input type="text" id="gmailRecipientInput" class="form-control" placeholder="เช่น executive@gmail.com, accounting@gmail.com">
+          <span style="font-size: 0.75rem; color: var(--gray-500);">* ระบบจะจำอีเมลล่าสุดไว้ให้อัตโนมัติสำหรับการส่งครั้งต่อไป</span>
+        </div>
+
+        <div class="form-group">
+          <label for="gmailSubjectInput">4. หัวข้ออีเมล (Subject)</label>
+          <input type="text" id="gmailSubjectInput" class="form-control" style="font-weight: 600;">
+        </div>
+
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label style="margin-bottom: 0;">5. ข้อความสรุปที่จะส่ง (Preview Message)</label>
+            <button type="button" class="btn btn-outline btn-sm" id="btnCopyGmailBody">
+              📋 คัดลอกข้อความสรุป
+            </button>
+          </div>
+          <div class="gmail-preview-box" id="gmailPreviewText"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline btn-sm" id="btnOpenMailtoClient" title="เปิดผ่านโปรแกรมอีเมลในเครื่อง เช่น Outlook หรือ Mail">
+          📧 เปิดด้วยโปรแกรมเมลในเครื่อง (mailto)
+        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-outline" id="btnCancelGmailModal">ปิด</button>
+          <button type="button" class="btn btn-gmail" id="btnLaunchGmailCompose">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            เปิด Gmail และส่งทันที 🚀
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Export Summary as JPG Image -->
+  <div class="modal-overlay" id="jpgModal">
+    <div class="modal-container modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title" style="color: #0284c7;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+          ส่งออกยอดสรุปเป็นรูปภาพ JPG (แชร์ลง LINE / เก็บเป็นภาพ)
+        </h3>
+        <button type="button" class="modal-close-btn" id="btnCloseJpgModal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid-2">
+          <!-- Report Type -->
+          <div class="form-group">
+            <label for="jpgReportType">1. รูปแบบสรุปยอดที่ต้องการส่งออก <span style="color: var(--expense-color);">*</span></label>
+            <select id="jpgReportType" class="form-control">
+              <option value="DAILY_EXPENSE">🧾 สรุปรายจ่ายประจำวัน (Daily Expense Summary)</option>
+              <option value="MONTHLY_EXPENSE">📉 สรุปรายจ่ายประจำเดือน (Monthly Expense Summary)</option>
+              <option value="MONTHLY">📊 สรุปภาพรวมยอดขาย-รายรับ-รายจ่าย รายเดือน (Full Monthly)</option>
+              <option value="DAILY">📅 สรุปยอดขาย-รายรับ-รายจ่าย รายวัน (Full Daily)</option>
+            </select>
+          </div>
+
+          <!-- Specific Day (shown if DAILY or DAILY_EXPENSE) -->
+          <div class="form-group" id="jpgDateWrap" style="display: none;">
+            <label for="jpgSelectedDate">ระบุวันที่สรุปยอด <span style="color: var(--expense-color);">*</span></label>
+            <input type="date" id="jpgSelectedDate" class="form-control">
+          </div>
+
+          <!-- Branch Scope -->
+          <div class="form-group" id="jpgBranchWrap">
+            <label for="jpgBranchFilter">2. ตัวเลือกสาขาที่ต้องการสรุป <span style="color: var(--expense-color);">*</span></label>
+            <select id="jpgBranchFilter" class="form-control">
+              <option value="ALL">🏢 สรุปรายจ่ายรวมประจำวัน (ทุกสาขา + บริษัท)</option>
+              <option value="หนองคาย">📍 แยกเฉพาะสาขาหนองคาย</option>
+              <option value="โคราช">📍 แยกเฉพาะสาขาโคราช</option>
+              <option value="ขอนแก่น">📍 แยกเฉพาะสาขาขอนแก่น</option>
+              <option value="รายจ่ายบริษัท">🏢 แยกเฉพาะรายจ่ายบริษัท (ส่วนกลาง)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+            <label style="margin-bottom: 0; font-weight: 600;">ตัวอย่างรูปภาพ JPG (Live Preview):</label>
+            <span style="font-size: 0.75rem; color: var(--gray-500);">ความละเอียดสูง คมชัด สวยงาม เหมาะกับส่งลงกลุ่ม LINE</span>
+          </div>
+          <div style="background: var(--gray-100); border: 1px solid var(--gray-300); border-radius: var(--radius-md); padding: 0.75rem; text-align: center; max-height: 420px; overflow-y: auto;">
+            <canvas id="exportJpgCanvas" style="max-width: 100%; height: auto; box-shadow: var(--shadow-md); border-radius: 8px; display: inline-block; background: white;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <button type="button" class="btn btn-outline" id="btnCopyJpgImage">
+          📋 คัดลอกรูปภาพ (Ctrl+V วางใน LINE ได้ทันที)
+        </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" class="btn btn-outline" id="btnCancelJpgModal">ปิด</button>
+          <button type="button" class="btn btn-primary" id="btnDownloadJpgImage">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            ดาวน์โหลดรูปภาพ JPG 🖼️
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript Application Script -->
+  <script src="app.js"></script>
+</body>
+</html>
