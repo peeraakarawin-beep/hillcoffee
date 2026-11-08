@@ -714,6 +714,92 @@
          TAB 4: EXPENSES (บันทึกรายจ่าย 3 สาขา + รายจ่ายบริษัท)
          ============================================================== -->
     <section id="tab-expenses" class="tab-content" style="display: none;">
+      <!-- Daily Expense Summary & Inspection Section -->
+      <div class="content-card">
+        <div class="card-header-bar" style="background: linear-gradient(135deg, #fff5f5, #ffffff); border-bottom: 1.5px solid #fecaca;">
+          <div>
+            <h3 class="card-header-title" style="color: #b91c1c;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+              </svg>
+              สรุปรายจ่ายประจำวัน (Daily Expense Summary)
+            </h3>
+            <p class="card-header-sub">เลือกดูสรุปรายจ่ายรวมประจำวัน หรือเลือกดูแยกเฉพาะแต่ละสาขา พร้อมส่งออกเป็นรูปภาพ JPG</p>
+          </div>
+          <div class="no-print" style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <label for="dailyExpFilterDate" style="font-size: 0.8rem; font-weight: 600; color: var(--gray-700);">เลือกวันที่:</label>
+              <input type="date" id="dailyExpFilterDate" class="form-control" style="width: auto; padding: 0.35rem 0.65rem; font-size: 0.85rem;">
+            </div>
+            <button class="btn btn-danger btn-sm" id="btnExportDailyExpenseJPG">
+              🖼️ ส่งออกรูปภาพ JPG สรุปรายจ่ายวันนี้
+            </button>
+            <button class="btn btn-gmail btn-sm" id="btnSendDailyExpenseGmail">
+              ✉️ ส่ง Gmail รายจ่ายวันนี้
+            </button>
+          </div>
+        </div>
+
+        <div style="padding: 1.25rem;">
+          <!-- Branch Selector Pills for Daily Expense Summary -->
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px dashed var(--gray-200);">
+            <div style="display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap;" id="dailyExpBranchPillsWrap">
+              <span style="font-size: 0.825rem; font-weight: 600; color: var(--gray-700);">ตัวเลือกการสรุป:</span>
+              <button type="button" class="branch-pill-btn active" data-daily-branch="ALL">🏢 สรุปรายจ่ายรวมประจำวัน (ทุกสาขา + บริษัท)</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="หนองคาย">📍 สาขาหนองคาย</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="โคราช">📍 สาขาโคราช</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="ขอนแก่น">📍 สาขาขอนแก่น</button>
+              <button type="button" class="branch-pill-btn" data-daily-branch="รายจ่ายบริษัท">🏢 รายจ่ายบริษัท</button>
+            </div>
+            <div style="font-size: 0.825rem; color: var(--gray-500);" id="dailyExpDateDisplay">
+              ข้อมูลประจำวันที่: -
+            </div>
+          </div>
+
+          <!-- Daily KPI Metric Cards (4 cards) -->
+          <div class="kpi-grid" style="margin-bottom: 1rem;" id="dailyExpKpiGrid">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- 4 Branch Breakdown Mini Cards (if ALL is selected) -->
+          <div id="dailyExpBranchBreakdownWrap" style="margin-bottom: 1rem;">
+            <!-- Dynamically populated -->
+          </div>
+
+          <!-- Categories Breakdown & Itemized Table for that Day -->
+          <div class="charts-grid-2col" style="margin-bottom: 0;">
+            <!-- Category breakdown list -->
+            <div class="chart-box" style="margin-bottom: 0;">
+              <div class="chart-box-header">
+                <div class="chart-box-title">
+                  <span style="color: var(--expense-color);">●</span> สัดส่วนรายจ่ายตามหมวดหมู่ของวันนี้
+                </div>
+                <span class="chart-box-subtitle" id="dailyExpCategoryTotalLabel">ยอดรวม ฿0.00</span>
+              </div>
+              <div class="breakdown-list" id="dailyExpCategoryList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Itemized list for that date -->
+            <div class="chart-box" style="margin-bottom: 0; display: flex; flex-direction: column;">
+              <div class="chart-box-header">
+                <div class="chart-box-title">
+                  <span style="color: #7c3aed;">📝</span> รายการจ่ายเงินของวันนี้
+                </div>
+                <span class="chart-box-subtitle" id="dailyExpItemCountLabel">0 รายการ</span>
+              </div>
+              <div style="flex: 1; overflow-y: auto; max-height: 280px;" id="dailyExpItemsList">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Daily Expense Entry Card -->
       <div class="content-card no-print">
         <div class="card-header-bar">
@@ -1074,8 +1160,10 @@
           <div class="form-group">
             <label for="gmailReportType">1. รูปแบบสรุปรายการ <span style="color: var(--expense-color);">*</span></label>
             <select id="gmailReportType" class="form-control">
-              <option value="MONTHLY">📊 สรุปภาพรวมประจำเดือน (Monthly Summary)</option>
-              <option value="DAILY">📅 สรุปยอดประจำวัน (Daily Summary)</option>
+              <option value="DAILY_EXPENSE">🧾 สรุปรายจ่ายประจำวัน (Daily Expense Summary)</option>
+              <option value="MONTHLY_EXPENSE">📉 สรุปรายจ่ายประจำเดือน (Monthly Expense Summary)</option>
+              <option value="MONTHLY">📊 สรุปภาพรวมยอดขาย-รายรับ-รายจ่าย รายเดือน (Full Monthly)</option>
+              <option value="DAILY">📅 สรุปยอดขาย-รายรับ-รายจ่าย ประจำวัน (Full Daily)</option>
             </select>
           </div>
 
@@ -1160,12 +1248,14 @@
           <div class="form-group">
             <label for="jpgReportType">1. รูปแบบสรุปยอดที่ต้องการส่งออก <span style="color: var(--expense-color);">*</span></label>
             <select id="jpgReportType" class="form-control">
-              <option value="MONTHLY">📊 สรุปภาพรวมประจำเดือน (Monthly Summary)</option>
-              <option value="DAILY">📅 สรุปยอดประจำวัน (Daily Summary)</option>
+              <option value="DAILY_EXPENSE">🧾 สรุปรายจ่ายประจำวัน (Daily Expense Summary)</option>
+              <option value="MONTHLY_EXPENSE">📉 สรุปรายจ่ายประจำเดือน (Monthly Expense Summary)</option>
+              <option value="MONTHLY">📊 สรุปภาพรวมยอดขาย-รายรับ-รายจ่าย รายเดือน (Full Monthly)</option>
+              <option value="DAILY">📅 สรุปยอดขาย-รายรับ-รายจ่าย รายวัน (Full Daily)</option>
             </select>
           </div>
 
-          <!-- Specific Day (shown if DAILY) -->
+          <!-- Specific Day (shown if DAILY or DAILY_EXPENSE) -->
           <div class="form-group" id="jpgDateWrap" style="display: none;">
             <label for="jpgSelectedDate">ระบุวันที่สรุปยอด <span style="color: var(--expense-color);">*</span></label>
             <input type="date" id="jpgSelectedDate" class="form-control">
@@ -1173,13 +1263,13 @@
 
           <!-- Branch Scope -->
           <div class="form-group" id="jpgBranchWrap">
-            <label for="jpgBranchFilter">2. สาขาที่ต้องการสรุป</label>
+            <label for="jpgBranchFilter">2. ตัวเลือกสาขาที่ต้องการสรุป <span style="color: var(--expense-color);">*</span></label>
             <select id="jpgBranchFilter" class="form-control">
-              <option value="ALL">🏢 รวมทุกสาขา + บริษัท</option>
-              <option value="หนองคาย">📍 สาขาหนองคาย</option>
-              <option value="โคราช">📍 สาขาโคราช</option>
-              <option value="ขอนแก่น">📍 สาขาขอนแก่น</option>
-              <option value="รายจ่ายบริษัท">🏢 รายจ่ายบริษัท</option>
+              <option value="ALL">🏢 สรุปรายจ่ายรวมประจำวัน (ทุกสาขา + บริษัท)</option>
+              <option value="หนองคาย">📍 แยกเฉพาะสาขาหนองคาย</option>
+              <option value="โคราช">📍 แยกเฉพาะสาขาโคราช</option>
+              <option value="ขอนแก่น">📍 แยกเฉพาะสาขาขอนแก่น</option>
+              <option value="รายจ่ายบริษัท">🏢 แยกเฉพาะรายจ่ายบริษัท (ส่วนกลาง)</option>
             </select>
           </div>
         </div>
